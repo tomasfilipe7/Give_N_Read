@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:give_n_read/bookspage.dart';
 import 'package:give_n_read/homepage.dart';
+import 'package:give_n_read/mapspage.dart';
 import 'package:give_n_read/scanner.dart';
 
 
@@ -24,6 +25,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     //HomePage(),
     Scanner(),
     BooksListPage(),
+    MapsPage(),
   ];
 
   void selectPage(int idx){
@@ -32,7 +34,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
         builder: (context) => navBarPages[idx],
       ),
     );
-    print(selectedTab);
   }
   
 
@@ -80,6 +81,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
             onPressed: () {
               setState(() {
                 selectedTab = 3;
+                selectPage(selectedTab);
+              });
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.map, color: idx == 4 ? Theme.of(context).accentColor : Colors.grey[400], size: 34,),
+            onPressed: () {
+              setState(() {
+                selectedTab = 4;
                 selectPage(selectedTab);
               });
             },
