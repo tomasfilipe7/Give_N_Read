@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:give_n_read/scanresult.dart';
+import 'package:give_n_read/scanresultpage.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 //import 'package:url_launcher/url_launcher.dart';
 
@@ -17,6 +17,9 @@ class _ScannerState extends State<Scanner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
   QRViewController? controller;
+  var arr;
+  String? bookStop;
+  String? type;
 
   @override
   void reassemble(){
@@ -157,9 +160,13 @@ class _ScannerState extends State<Scanner> {
       controller.pauseCamera();
       setState(() {
         result = scanData;
+        arr = result!.code.split(',');
+        bookStop = arr[0];
+        type = arr[1];
+        type = type!.replaceAll(' ', '');
         Navigator.push(
           context, MaterialPageRoute(
-            builder: (context) => ScanResult(result: result),
+            builder: (context) => ScanResult(bookStop: bookStop, type: type),
           ),
         );
       });
