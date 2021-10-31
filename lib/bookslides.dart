@@ -20,53 +20,93 @@ class _BookslidesState extends State<Bookslides> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(children: <Widget>[
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                type,
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 0.2,
-                ),
-              ),
-              GestureDetector(
-                onTap: () => print('See all'),
-                child: Text(
-                  'See All',
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 10.0,
-                    fontWeight: FontWeight.w500,
+      //physics: BouncingScrollPhysics(),
+      child: 
+        Column(children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  type,
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.2,
                   ),
                 ),
-              ),
-            ],
+                GestureDetector(
+                  onTap: () => print('See all'),
+                  child: Text(
+                    'See All',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        Container(
-          height: 270.0,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: books.length,
-            itemBuilder: (BuildContext context, int idx) {
-              String book = books[idx];
-              return GestureDetector(
-                child: Container(
-                  //margin: EdgeInsets.all(2.0),
-                  width: 210.0,
-                  child: Stack(
-                    alignment: Alignment.topCenter,
-                    children: <Widget>[
-                      Positioned(
-                        bottom: 7.5,
-                        child: Container(
-                          height: 250.0,
-                          width: 180.0,
+          Container(
+            height: 270.0,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: books.length,
+              itemBuilder: (BuildContext context, int idx) {
+                String book = books[idx];
+                return GestureDetector(
+                  child: Container(
+                    //margin: EdgeInsets.all(2.0),
+                    width: 210.0,
+                    child: Stack(
+                      alignment: Alignment.topCenter,
+                      children: <Widget>[
+                        Positioned(
+                          bottom: 7.5,
+                          child: Container(
+                            height: 250.0,
+                            width: 180.0,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  offset: Offset(0.0, 6.0),
+                                  blurRadius: 4.0,
+                                )
+                              ],
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(15.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    book,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  SizedBox(height: 5.0),
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 2.0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin:
+                              EdgeInsets.only(top: 30.0, left: 25.0, right: 25.0),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(20.0),
@@ -75,79 +115,42 @@ class _BookslidesState extends State<Bookslides> {
                                 color: Colors.black26,
                                 offset: Offset(0.0, 6.0),
                                 blurRadius: 6.0,
-                              )
+                              ),
                             ],
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.all(15.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  book,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
+                          child: Stack(
+                            children: <Widget>[
+                              Hero(
+                                tag: book,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  child: Image(
+                                    height: 170.0,
+                                    width: 180.0,
+                                    image: NetworkImage(image_url),
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                                SizedBox(height: 5.0),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 2.0),
-                                ),
-                              ],
-                            ),
+                              ),
+                              // Positioned(
+                              //   right: 10.0,
+                              //   top: 10.0,
+                              //   child: Column(
+                              //     crossAxisAlignment: CrossAxisAlignment.start,
+                              //     children: <Widget>[],
+                              //   ),
+                              // ),
+                            ],
                           ),
                         ),
-                      ),
-                      Container(
-                        margin:
-                            EdgeInsets.only(top: 30.0, left: 25.0, right: 25.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black26,
-                              offset: Offset(0.0, 6.0),
-                              blurRadius: 6.0,
-                            ),
-                          ],
-                        ),
-                        child: Stack(
-                          children: <Widget>[
-                            Hero(
-                              tag: book,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20.0),
-                                child: Image(
-                                  height: 170.0,
-                                  width: 180.0,
-                                  image: NetworkImage(image_url),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              right: 10.0,
-                              top: 10.0,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-      ]),
+        ]),
     );
   }
 }

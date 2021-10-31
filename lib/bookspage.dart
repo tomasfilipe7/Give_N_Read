@@ -16,41 +16,43 @@ class _BooksListPageState extends State<BooksListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavBar(idx: 1),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      // body: Column(
+      //   crossAxisAlignment: CrossAxisAlignment.center,
+      //   children: [
+          // SizedBox(
+          //   height: 70,
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Icon(
+          //       Icons.menu_book_rounded,
+          //       size: 50,
+          //     ),
+          //     Text(
+          //       "Books page",
+          //       style: TextStyle(
+          //           color: Colors.black,
+          //           fontWeight: FontWeight.bold,
+          //           fontSize: 30),
+          //     ),
+          //   ],
+          // ),
+      body: ListView(
+        physics: BouncingScrollPhysics(),
         children: [
           SizedBox(
-            height: 70,
+            height: 50,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.menu_book_rounded,
-                size: 50,
-              ),
-              Text(
-                "Books page",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30),
-              ),
-            ],
+          Bookslides(
+            type: "To Give",
+            books: ["Harry Potter", "O Golpe", "Os Maias"],
           ),
           SizedBox(
             height: 50,
           ),
           Bookslides(
             type: "To Read",
-            books: ["Harry Potter", "O Golpe", "Os Maias"],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Bookslides(
-            type: "To Give",
             books: [
               "Normal People",
               "A Branca de Neve",
@@ -59,6 +61,9 @@ class _BooksListPageState extends State<BooksListPage> {
           ),
         ],
       ),
+      //   ],
+      // ),
+      bottomNavigationBar: BottomNavBar(idx: 1),
     );
   }
 }
