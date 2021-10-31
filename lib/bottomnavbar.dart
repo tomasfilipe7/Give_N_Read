@@ -3,6 +3,7 @@ import 'package:give_n_read/bookspage.dart';
 import 'package:give_n_read/homepage.dart';
 import 'package:give_n_read/mapspage.dart';
 import 'package:give_n_read/scanner.dart';
+import 'package:give_n_read/scannerpage.dart';
 
 
 class BottomNavBar extends StatefulWidget {
@@ -22,8 +23,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   List<Widget> navBarPages = [
     HomePage(),
     BooksListPage(),
-    //HomePage(),
-    Scanner(),
+    ScannerPage(),
     BooksListPage(),
     MapsPage(),
   ];
@@ -88,17 +88,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             padding: EdgeInsets.only(right: 38, left: 0),
           ),
           IconButton(
-            icon: Icon(Icons.notification_add, color: idx == 3 ? Theme.of(context).accentColor : Colors.grey[300], size: 30,),
-            onPressed: () {
-              setState(() {
-                selectedTab = 3;
-                selectPage(selectedTab);
-              });
-            },
-            padding: EdgeInsets.only(top: 15),
-          ),
-          IconButton(
-            icon: Icon(Icons.map, color: idx == 4 ? Theme.of(context).accentColor : Colors.grey[300], size: 30,),
+            icon: Icon(Icons.location_on, color: idx == 4 ? Theme.of(context).accentColor : Colors.grey[300], size: 30,),
             onPressed: () {
               setState(() {
                 selectedTab = 4;
@@ -107,6 +97,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
             },
             padding: EdgeInsets.only(top: 15),
           ),
+          IconButton(
+            icon: Icon(Icons.notification_add, color: idx == 3 ? Theme.of(context).accentColor : Colors.grey[300], size: 30,),
+            onPressed: () {
+              setState(() {
+                selectedTab = 3;
+                selectPage(selectedTab);
+              });
+            },
+            padding: EdgeInsets.only(top: 15),
+          )
         ],
       ),
     );
