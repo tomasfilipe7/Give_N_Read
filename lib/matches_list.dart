@@ -8,6 +8,11 @@ class Matches_List extends StatefulWidget {
 }
 
 class _Matches_ListState extends State<Matches_List> {
+  final book_list = {
+    "Harry Potter, ": "J.K.Rowling",
+    "Lá, onde o vento não chora, ": "Delia Owens",
+    "O Golpe, ": "Robert Muchamore"
+  };
   int matches_found = 2;
   @override
   Widget build(BuildContext context) {
@@ -42,36 +47,25 @@ class _Matches_ListState extends State<Matches_List> {
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.book_rounded,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  Text(
-                    "Harry Potter, ",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  Text(
-                    "J.K.Rowling",
-                    style: TextStyle(color: Colors.grey[500], fontSize: 18),
-                  )
-                ],
-              ),
-              Row(
-                children: [
-                  Icon(Icons.book_rounded,
-                      color: Theme.of(context).colorScheme.secondary),
-                  Text("Lá, onde o vento não chora, ",
-                      style: TextStyle(fontSize: 18)),
-                  Text(
-                    "Delia Owens",
-                    style: TextStyle(color: Colors.grey[500], fontSize: 18),
-                  )
-                ],
-              )
+            children: <Widget>[
+              for (final book in book_list.entries)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.book_rounded,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    Text(
+                      book.key,
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    Text(
+                      book.value,
+                      style: TextStyle(color: Colors.grey[500], fontSize: 18),
+                    )
+                  ],
+                ),
             ],
           )
         ],
