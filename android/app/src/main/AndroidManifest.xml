@@ -1,5 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.give_n_read">
+    <!-- Permissions to use bluetooth -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />  
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />  
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>  
    <application
         android:label="give_n_read"
         android:icon="@mipmap/ic_launcher">
@@ -40,5 +44,7 @@
       <meta-data 
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAbx2I4dJwjbu3tLNG3WS6tfLzp-UvmcCU" />
+
+
     </application>
 </manifest>
