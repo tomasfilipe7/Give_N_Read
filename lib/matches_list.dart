@@ -17,14 +17,12 @@ class _Matches_ListState extends State<Matches_List> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 450,
+      padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+      height: 300,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 10,
-          ),
           matches_found == 0
               ? Text(
                   'No matches were found',
@@ -32,7 +30,7 @@ class _Matches_ListState extends State<Matches_List> {
                       color: Colors.grey[600],
                       fontWeight: FontWeight.bold,
                       fontSize: 22),
-                  textAlign: TextAlign.left,
+                  //textAlign: TextAlign.left,
                 )
               : Text(
                   "You have found $matches_found matches",
@@ -40,17 +38,18 @@ class _Matches_ListState extends State<Matches_List> {
                       color: Colors.grey[600],
                       fontWeight: FontWeight.bold,
                       fontSize: 22),
-                  textAlign: TextAlign.left,
+                  //textAlign: TextAlign.left,
                 ),
           SizedBox(
-            height: 50,
+            height: 30,
           ),
           Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               for (final book in book_list.entries)
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(
                       Icons.book_rounded,
@@ -59,15 +58,19 @@ class _Matches_ListState extends State<Matches_List> {
                     Text(
                       book.key,
                       style: const TextStyle(fontSize: 18),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    Text(
-                      book.value,
-                      style: TextStyle(color: Colors.grey[500], fontSize: 18),
-                    )
+                    Expanded(
+                      child: Text(
+                        book.value,
+                        style: TextStyle(color: Colors.grey[500], fontSize: 18),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
             ],
-          )
+          ),
         ],
       ),
     );

@@ -14,36 +14,54 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavBar(idx: 0),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-            height: 90,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.menu_book_rounded,
-                size: 50,
+          Container(
+            //padding: EdgeInsets.only(top: 60, left: 20, right: 20),
+            padding: EdgeInsets.only(right: 120, top: 60),
+            child: 
+              Column(
+                //mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Welcome to', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32)),
+                  Text('Give&Read', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42, color: Theme.of(context).primaryColor)),
+                ],
               ),
-              Text(
-                "Homepage",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30),
-              ),
-            ],
           ),
-          SizedBox(
-            height: 90,
+          const Divider(
+            height: 10,
+            thickness: 1,
+            indent: 20,
+            endIndent: 20,
           ),
+          // SizedBox(
+          //   height: 90,
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Icon(
+          //       Icons.menu_book_rounded,
+          //       size: 50,
+          //     ),
+          //     Text(
+          //       "Homepage",
+          //       style: TextStyle(
+          //           color: Colors.black,
+          //           fontWeight: FontWeight.bold,
+          //           fontSize: 30),
+          //     ),
+          //   ],
+          // ),
+          // SizedBox(
+          //   height: 90,
+          // ),
           Matches_List(),
           BluetoothButton(),
         ],
       ),
+      bottomNavigationBar: BottomNavBar(idx: 0),
     );
   }
 }
