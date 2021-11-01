@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:give_n_read/bookspage.dart';
 import 'package:give_n_read/homepage.dart';
 import 'package:give_n_read/mapspage.dart';
+import 'package:give_n_read/notificationspage.dart';
 import 'package:give_n_read/scanner.dart';
 import 'package:give_n_read/scannerpage.dart';
 
@@ -24,8 +25,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
     HomePage(),
     BooksListPage(),
     ScannerPage(),
-    BooksListPage(),
     MapsPage(),
+    NotificationsPage(),
   ];
 
   void selectPage(int idx){
@@ -78,7 +79,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             padding: EdgeInsets.only(top: 15),
           ),
           IconButton(
-            icon: Icon(Icons.camera, color: idx == 2 ? Theme.of(context).accentColor : Colors.grey[300], size: 64,),
+            icon: Icon(Icons.camera, color: idx == 2 ? Theme.of(context).accentColor : Theme.of(context).primaryColor, size: 64,),
             onPressed: () {
               setState(() {
                 selectedTab = 2;
@@ -88,20 +89,20 @@ class _BottomNavBarState extends State<BottomNavBar> {
             padding: EdgeInsets.only(right: 38, left: 0),
           ),
           IconButton(
-            icon: Icon(Icons.location_on, color: idx == 4 ? Theme.of(context).accentColor : Colors.grey[300], size: 30,),
+            icon: Icon(Icons.location_on, color: idx == 3 ? Theme.of(context).accentColor : Colors.grey[300], size: 30,),
             onPressed: () {
               setState(() {
-                selectedTab = 4;
+                selectedTab = 3;
                 selectPage(selectedTab);
               });
             },
             padding: EdgeInsets.only(top: 15),
           ),
           IconButton(
-            icon: Icon(Icons.notification_add, color: idx == 3 ? Theme.of(context).accentColor : Colors.grey[300], size: 30,),
+            icon: Icon(Icons.notification_add, color: idx == 4 ? Theme.of(context).accentColor : Colors.grey[300], size: 30,),
             onPressed: () {
               setState(() {
-                selectedTab = 3;
+                selectedTab = 4;
                 selectPage(selectedTab);
               });
             },

@@ -13,7 +13,7 @@ class _Matches_ListState extends State<Matches_List> {
     "Lá, onde o vento não chora, ": "Delia Owens",
     "O Golpe, ": "Robert Muchamore"
   };
-  int matches_found = 2;
+  int matches_found = 3;
   @override
   Widget build(BuildContext context) {
     return Container(

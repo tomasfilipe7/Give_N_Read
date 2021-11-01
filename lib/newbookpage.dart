@@ -1,26 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:give_n_read/homepage.dart';
-import 'package:give_n_read/scannerpage.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:give_n_read/bookslistpage.dart';
+import 'package:give_n_read/bookspage.dart';
 
-class ScanResult extends StatefulWidget {
-  final String? bookStop;
-  final String? type;
-  const ScanResult({ Key? key, required this.bookStop, required this.type }) : super(key: key);
+class NewBookPage extends StatefulWidget {
+  const NewBookPage({ Key? key }) : super(key: key);
 
   @override
-  _ScanResultState createState() => _ScanResultState(bookStop: this.bookStop, type: this.type);
+  _NewBookPageState createState() => _NewBookPageState();
 }
 
-class _ScanResultState extends State<ScanResult> {
-  String? bookStop;
-  String? type;
-  _ScanResultState({required this.bookStop, required this.type });
-
-  final _formKey = GlobalKey<FormState>();
-
+class _NewBookPageState extends State<NewBookPage> {
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -29,24 +22,6 @@ class _ScanResultState extends State<ScanResult> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('You are at ${bookStop}', 
-                  style: const TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold
-                  ),
-            ),
-            SizedBox(height: 20),
-            Text('Please tell us which book do you want to ',
-                  style: const TextStyle(
-                      fontSize: 16.0,
-                  ),
-            ),
-            Text('${type}',
-                  style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold
-                  ),
-            ),
             SizedBox(height: 40),
             Form(
               child: Column(
@@ -110,11 +85,11 @@ class _ScanResultState extends State<ScanResult> {
                           child: IconButton(onPressed: () => showDialog<String>(
                                               context: context, 
                                               builder: (BuildContext context) => AlertDialog(
-                                                title: Text('${type?.replaceFirst('c', 'C')}' + ' done'),
-                                                content: const Text('Thank you!', textAlign: TextAlign.center,),
+                                                title: Text('New book'),
+                                                content: const Text('You just added a new book. Thank you!', textAlign: TextAlign.center,),
                                                 actions: <Widget>[
                                                   TextButton(
-                                                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage())), 
+                                                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BooksListPage())), 
                                                     child: const Text('OK'),
                                                     style: TextButton.styleFrom(primary: Theme.of(context).accentColor),
                                                   ),
@@ -130,7 +105,7 @@ class _ScanResultState extends State<ScanResult> {
                             }
                           },
                           style: ElevatedButton.styleFrom(primary: Theme.of(context).accentColor),
-                          child: IconButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => ScannerPage())); }, icon: Icon(Icons.delete)),
+                          child: IconButton(onPressed: () {Navigator.pop(context); }, icon: Icon(Icons.delete)),
                         ),
                       ],
                     ),
@@ -143,5 +118,4 @@ class _ScanResultState extends State<ScanResult> {
       ),
     );
   }
-
 }

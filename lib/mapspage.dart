@@ -42,7 +42,7 @@ class _MapsPageState extends State<MapsPage> {
           Icons.center_focus_strong
         ),
       ),
-      bottomNavigationBar: const BottomNavBar(idx: 4),
+      bottomNavigationBar: const BottomNavBar(idx: 3),
     );
   }
 

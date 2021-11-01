@@ -24,8 +24,8 @@ class _HomePageState extends State<HomePage> {
                 //mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Welcome to', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32)),
-                  Text('Give&Read', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42, color: Theme.of(context).primaryColor)),
+                  Text('Welcome to', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32, shadows: <Shadow>[Shadow(offset: Offset(4.0, 4.0), blurRadius: 8.0, color: Colors.black26)])),
+                  Text('Give&Read', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42, color: Theme.of(context).primaryColor, shadows: <Shadow>[Shadow(offset: Offset(2.0, 2.0), blurRadius: 8.0, color: Colors.black26)])),
                 ],
               ),
           ),

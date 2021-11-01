@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:give_n_read/bookslistpage.dart';
+import 'package:give_n_read/bookspage.dart';
 
 class Bookslides extends StatefulWidget {
   String type = "Wanted";
@@ -34,12 +36,14 @@ class _BookslidesState extends State<Bookslides> {
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 0.2,
+                    shadows: <Shadow>[Shadow(offset: Offset(2.0, 2.0), blurRadius: 8.0, color: Colors.black26)]
                   ),
+                  
                 ),
                 GestureDetector(
-                  onTap: () => print('See all'),
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BooksListAllPage(type: type, books: books,))),
                   child: Text(
-                    'See All',
+                    'See all',
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontSize: 14.0,
@@ -75,8 +79,8 @@ class _BookslidesState extends State<Bookslides> {
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black26,
-                                  offset: Offset(0.0, 6.0),
-                                  blurRadius: 4.0,
+                                  offset: Offset(0.0, 2.0),
+                                  blurRadius: 10.0,
                                 )
                               ],
                             ),
