@@ -28,11 +28,37 @@ class _MapsPageState extends State<MapsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: _aveiroCity,
-        onMapCreated: (controller) => _mapcontroller = controller,
-        markers: _createMarker(),
+      body: Container(
+        child: Column(
+          children: [
+            Container(
+              height: 100,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(left: 20, top: 55),
+              child: Text('BookStops map', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24, color: Colors.white),),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+                color: Theme.of(context).primaryColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    offset: Offset(0.0, 4.0),
+                    blurRadius: 10.0,
+                    spreadRadius: 2.0,
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: GoogleMap(
+                mapType: MapType.normal,
+                initialCameraPosition: _aveiroCity,
+                onMapCreated: (controller) => _mapcontroller = controller,
+                markers: _createMarker(),
+              ),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _mapcontroller?.animateCamera(CameraUpdate.newCameraPosition(_aveiroCity)),

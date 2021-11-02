@@ -38,31 +38,53 @@ class _BooksListPageState extends State<BooksListPage> {
           //     ),
           //   ],
           // ),
-      body: ListView(
-        physics: BouncingScrollPhysics(),
-        children: [
-          SizedBox(
-            height: 50,
-          ),
-          Bookslides(
-            type: "To Give",
-            books: ["Harry Potter", "O Golpe", "Os Maias"],
-          ),
-          SizedBox(
-            height: 50,
-          ),
-          Bookslides(
-            type: "To Read",
-            books: [
-              "Normal People",
-              "A Branca de Neve",
-              "Ensaio sobre a cegueira"
-            ],
-          ),
-        ],
+      body: Container(
+        child: Column(
+          children: [
+            Container(
+              height: 100,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(left: 20, top: 55),
+              child: Text('Books to Give&Read', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24, color: Colors.white),),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+                color: Theme.of(context).primaryColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    offset: Offset(0.0, 4.0),
+                    blurRadius: 10.0,
+                    spreadRadius: 2.0,
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                physics: BouncingScrollPhysics(),
+                children: [
+                  SizedBox(height: 10,),
+                  Bookslides(
+                    type: "To Give",
+                    books: ["Harry Potter", "O Golpe", "Os Maias"],
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Bookslides(
+                    type: "To Read",
+                    books: [
+                      "Normal People",
+                      "A Branca de Neve",
+                      "Ensaio sobre a cegueira"
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
-      //   ],
-      // ),
       bottomNavigationBar: BottomNavBar(idx: 1),
     );
   }
