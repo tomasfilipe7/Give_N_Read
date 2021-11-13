@@ -58,28 +58,6 @@ class _HomePageState extends State<HomePage> {
             indent: 20,
             endIndent: 20,
           ),
-          // SizedBox(
-          //   height: 90,
-          // ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-          //     Icon(
-          //       Icons.menu_book_rounded,
-          //       size: 50,
-          //     ),
-          //     Text(
-          //       "Homepage",
-          //       style: TextStyle(
-          //           color: Colors.black,
-          //           fontWeight: FontWeight.bold,
-          //           fontSize: 30),
-          //     ),
-          //   ],
-          // ),
-          // SizedBox(
-          //   height: 90,
-          // ),
           Matches_List(),
           BluetoothButton(),
         ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:give_n_read/bookslistpage.dart';
 import 'package:give_n_read/bookspage.dart';
+import 'package:books_finder/books_finder.dart';
+import 'package:give_n_read/booksresultspage.dart';
 
 class NewBookPage extends StatefulWidget {
   const NewBookPage({ Key? key }) : super(key: key);
@@ -13,6 +15,7 @@ class _NewBookPageState extends State<NewBookPage> {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
+    TextEditingController book_name = TextEditingController();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -29,6 +32,7 @@ class _NewBookPageState extends State<NewBookPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextFormField(
+                    controller: book_name,
                     decoration: InputDecoration(
                       labelText: 'Name of the book',
                       labelStyle: TextStyle(
@@ -42,34 +46,34 @@ class _NewBookPageState extends State<NewBookPage> {
                       return (value != null) ? 'Please insert the name of the book' : null;
                     },
                   ),
-                  SizedBox(height: 15),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Author',
-                      labelStyle: TextStyle(
-                        color: Theme.of(context).primaryColor
-                      ),
-                      border: OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor))
-                    ),
-                    validator: (String? value) {
-                      return (value != null) ? 'Please insert the name of the author' : null;
-                    },
-                  ),
-                  SizedBox(height: 15),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'ISBN',
-                      labelStyle: TextStyle(
-                        color: Theme.of(context).primaryColor
-                      ),
-                      border: OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor))
-                    ),
-                    validator: (String? value) {
-                      return (value != null) ? 'Please insert the ISBN of the book' : null;
-                    },
-                  ),
+                  // SizedBox(height: 15),
+                  // TextFormField(
+                  //   decoration: InputDecoration(
+                  //     labelText: 'Author',
+                  //     labelStyle: TextStyle(
+                  //       color: Theme.of(context).primaryColor
+                  //     ),
+                  //     border: OutlineInputBorder(),
+                  //     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor))
+                  //   ),
+                  //   validator: (String? value) {
+                  //     return (value != null) ? 'Please insert the name of the author' : null;
+                  //   },
+                  // ),
+                  // SizedBox(height: 15),
+                  // TextFormField(
+                  //   decoration: InputDecoration(
+                  //     labelText: 'ISBN',
+                  //     labelStyle: TextStyle(
+                  //       color: Theme.of(context).primaryColor
+                  //     ),
+                  //     border: OutlineInputBorder(),
+                  //     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor))
+                  //   ),
+                  //   validator: (String? value) {
+                  //     return (value != null) ? 'Please insert the ISBN of the book' : null;
+                  //   },
+                  // ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
                     child: Row(
@@ -82,21 +86,12 @@ class _NewBookPageState extends State<NewBookPage> {
                             }
                           },
                           style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
-                          child: IconButton(onPressed: () => showDialog<String>(
-                                              context: context, 
-                                              builder: (BuildContext context) => AlertDialog(
-                                                title: Text('New book'),
-                                                content: const Text('You just added a new book. Thank you!', textAlign: TextAlign.center,),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BooksListPage())), 
-                                                    child: const Text('OK'),
-                                                    style: TextButton.styleFrom(primary: Theme.of(context).accentColor),
-                                                  ),
-                                                ],
-                                              )
-                                            ), 
-                                            icon: Icon(Icons.check)),
+                          child: IconButton(
+                            onPressed: () async {
+                              List<Book> books = await findBooks(book_name.text);
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => BooksResultsPage(books: books)));
+                            },
+                            icon: Icon(Icons.check)),
                         ),
                         ElevatedButton(
                           onPressed: () {
@@ -118,4 +113,21 @@ class _NewBookPageState extends State<NewBookPage> {
       ),
     );
   }
+}
+
+Future<List<Book>> findBooks(String book) async {
+  final books = await queryBooks(
+    book,
+    maxResults: 5,
+    printType: PrintType.books,
+    orderBy: OrderBy.relevance,
+    reschemeImageLinks: true,
+  );
+  List<Book> booksList = [];
+  for (var book in books) {
+    //final info = book.info;
+    //print('$info\n');
+    booksList.add(book);
+  }
+  return booksList;
 }

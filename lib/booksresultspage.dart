@@ -1,33 +1,32 @@
+import 'package:books_finder/books_finder.dart';
 import 'package:flutter/material.dart';
 import 'package:give_n_read/bottomnavbar.dart';
-import 'package:give_n_read/newbookpage.dart';
 
-class BooksListAllPage extends StatefulWidget {
-  String? type;
-  List<String> books;
-  BooksListAllPage({ Key? key, required this.type, required this.books }) : super(key: key);
+class BooksResultsPage extends StatefulWidget {
+  List<Book> books;
+  BooksResultsPage({ Key? key, required this.books }) : super(key: key);
 
   @override
-  _BooksListAllPageState createState() => _BooksListAllPageState(type, books);
+  _BooksResultsPageState createState() => _BooksResultsPageState(books);
 }
 
-class _BooksListAllPageState extends State<BooksListAllPage> {
-  String? type;
-  _BooksListAllPageState(this.type, this.books);
+class _BooksResultsPageState extends State<BooksResultsPage> {
+  List<Book> books = [];
+  _BooksResultsPageState(this.books);
 
-  List<String> books = ["Harry Potter", "Lá, onde o vento não chora", "Pessoas Normais", "Hábitos Atómicos"];
-  String image_url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNT0xwyLstvC7wH8jYIKur3GTcSq-g6fj2EbL4wk-qaONHYjBswa3rpFsZJeEjuXcG-lw&usqp=CAU";
-  
+  List<Book> books_to_add = [];
+
+  String image_null = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNT0xwyLstvC7wH8jYIKur3GTcSq-g6fj2EbL4wk-qaONHYjBswa3rpFsZJeEjuXcG-lw&usqp=CAU";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-            onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => NewBookPage()));
-            },
-            icon: const Icon(Icons.add, color: Colors.white,),
-            label: Text('Add new book', style: TextStyle(color: Colors.white),),
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //       onPressed: (){
+      //         Navigator.push(context, MaterialPageRoute(builder: (context) => NewBookPage()));
+      //       },
+      //       icon: const Icon(Icons.add),
+      //       label: Text('Add new book'),
+      // ),
       body: ListView(
         physics: BouncingScrollPhysics(),
         children: [
@@ -43,18 +42,21 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
               ),
             ],
           ),
-          Padding(
-            padding: EdgeInsets.only(left:50),
-            child: Text('List of books ${type}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.only(left:50),
+          //   child: Text('List of books ${type}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+          // ),
           Container(
-            height: 600.0,
+            height: 1000.0,
             child: ListView.builder(
               //padding: EdgeInsets.all(20.0),
               physics: BouncingScrollPhysics(),
               itemCount: books.length,
               itemBuilder: (BuildContext context, int idx) {
-                  String book = books[idx];
+                  String book = books[idx].info.title;
+                  String author = books[idx].info.authors[0];
+                  Uri? image_url = books[idx].info.imageLinks["thumbnail"];
+                  String image = image_url.toString() != null ? image_url.toString() : image_null;
                   return GestureDetector(
                     child: Container(
                       height: 140.0,
@@ -87,10 +89,12 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
                                     Text(book,
                                       style: TextStyle(
                                         fontSize: 15.0,
+                                        overflow: TextOverflow.ellipsis,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     SizedBox(height: 7,),
-                                    Text('author'),
+                                    Text(author),
                                   ],
                                 ),
                               ),
@@ -116,7 +120,7 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
                                   child: Image(
                                     height: 80.0,
                                     width: 70.0,
-                                    image: NetworkImage((image_url).toString()),
+                                    image: NetworkImage((image)),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -126,8 +130,10 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
                           Container(
                             margin: EdgeInsets.only(top: 80.0, left: 200),
                             child: ElevatedButton(
-                              child: Icon(Icons.delete),
-                              onPressed: () {},
+                              child: Icon(Icons.check),
+                              onPressed: () {
+                                books_to_add.add(books[idx]);
+                              },
                               style: ElevatedButton.styleFrom(
                                 primary: Theme.of(context).primaryColor,
                               )
