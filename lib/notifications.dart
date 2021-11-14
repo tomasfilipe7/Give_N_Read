@@ -63,7 +63,7 @@ class _NotificationsListState extends State<NotificationsList> {
                   padding: EdgeInsets.only(left: 120, top: 100),
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MapsPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MapsPage(destination: 'bookStop1')));
                     }, 
                     icon: Icon(Icons.directions), 
                     label: Text('Take me there!'),

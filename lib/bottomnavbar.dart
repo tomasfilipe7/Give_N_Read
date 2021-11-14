@@ -25,7 +25,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     HomePage(),
     BooksListPage(),
     ScannerPage(),
-    MapsPage(),
+    MapsPage(destination: 'center'),
     NotificationsPage(),
   ];
 
