@@ -25,7 +25,7 @@ class _NewBookPageState extends State<NewBookPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 40),
+            SizedBox(height: MediaQuery.of(context).size.height / 4),
             Form(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -100,7 +100,7 @@ class _NewBookPageState extends State<NewBookPage> {
                             }
                           },
                           style: ElevatedButton.styleFrom(primary: Theme.of(context).accentColor),
-                          child: IconButton(onPressed: () {Navigator.pop(context); }, icon: Icon(Icons.delete)),
+                          child: IconButton(onPressed: () {Navigator.pop(context); }, icon: Icon(Icons.clear)),
                         ),
                       ],
                     ),
