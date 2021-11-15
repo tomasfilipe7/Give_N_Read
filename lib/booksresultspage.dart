@@ -88,7 +88,10 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
                                             ),
                                           ),
                                           SizedBox(height: 7,),
-                                          Text(author),
+                                          Text(author,
+                                            style: TextStyle(
+                                              overflow: TextOverflow.ellipsis,
+                                            ),),
                                         ],
                                       ),
                                     ),
@@ -122,7 +125,7 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(top: 80.0, left: 200),
+                                  margin: EdgeInsets.only(top: 75.0, left: 210),
                                   child: ElevatedButton(
                                     child: Icon(Icons.check),
                                     onPressed: () {

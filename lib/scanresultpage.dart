@@ -1,5 +1,8 @@
+import 'package:books_finder/books_finder.dart';
 import 'package:flutter/material.dart';
+import 'package:give_n_read/booksresultspage.dart';
 import 'package:give_n_read/homepage.dart';
+import 'package:give_n_read/scanner.dart';
 import 'package:give_n_read/scannerpage.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -18,6 +21,8 @@ class _ScanResultState extends State<ScanResult> {
   _ScanResultState({required this.bookStop, required this.type });
 
   final _formKey = GlobalKey<FormState>();
+  TextEditingController book_name = TextEditingController();
+  TextEditingController book_isbn = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +59,7 @@ class _ScanResultState extends State<ScanResult> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextFormField(
+                    controller: book_name,
                     decoration: InputDecoration(
                       labelText: 'Name of the book',
                       labelStyle: TextStyle(
@@ -67,34 +73,34 @@ class _ScanResultState extends State<ScanResult> {
                       return (value != null) ? 'Please insert the name of the book' : null;
                     },
                   ),
-                  SizedBox(height: 15),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Author',
-                      labelStyle: TextStyle(
-                        color: Theme.of(context).primaryColor
-                      ),
-                      border: OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor))
-                    ),
-                    validator: (String? value) {
-                      return (value != null) ? 'Please insert the name of the author' : null;
-                    },
-                  ),
-                  SizedBox(height: 15),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'ISBN',
-                      labelStyle: TextStyle(
-                        color: Theme.of(context).primaryColor
-                      ),
-                      border: OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor))
-                    ),
-                    validator: (String? value) {
-                      return (value != null) ? 'Please insert the ISBN of the book' : null;
-                    },
-                  ),
+                  // SizedBox(height: 15),
+                  // TextFormField(
+                  //   decoration: InputDecoration(
+                  //     labelText: 'Author',
+                  //     labelStyle: TextStyle(
+                  //       color: Theme.of(context).primaryColor
+                  //     ),
+                  //     border: OutlineInputBorder(),
+                  //     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor))
+                  //   ),
+                  //   validator: (String? value) {
+                  //     return (value != null) ? 'Please insert the name of the author' : null;
+                  //   },
+                  // ),
+                  // SizedBox(height: 15),
+                  // TextFormField(
+                  //   decoration: InputDecoration(
+                  //     labelText: 'ISBN',
+                  //     labelStyle: TextStyle(
+                  //       color: Theme.of(context).primaryColor
+                  //     ),
+                  //     border: OutlineInputBorder(),
+                  //     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor))
+                  //   ),
+                  //   validator: (String? value) {
+                  //     return (value != null) ? 'Please insert the ISBN of the book' : null;
+                  //   },
+                  // ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
                     child: Row(
@@ -107,21 +113,25 @@ class _ScanResultState extends State<ScanResult> {
                             }
                           },
                           style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
-                          child: IconButton(onPressed: () => showDialog<String>(
-                                              context: context, 
-                                              builder: (BuildContext context) => AlertDialog(
-                                                title: Text('${type?.replaceFirst('c', 'C')}' + ' done'),
-                                                content: const Text('Thank you!', textAlign: TextAlign.center,),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage())), 
-                                                    child: const Text('OK'),
-                                                    style: TextButton.styleFrom(primary: Theme.of(context).accentColor),
-                                                  ),
-                                                ],
-                                              )
-                                            ), 
-                                            icon: Icon(Icons.check)),
+                          // child: IconButton(onPressed: () => showDialog<String>(
+                          //                     context: context, 
+                          //                     builder: (BuildContext context) => AlertDialog(
+                          //                       title: Text('${type?.replaceFirst('c', 'C')}' + ' done'),
+                          //                       content: const Text('Thank you!', textAlign: TextAlign.center,),
+                          //                       actions: <Widget>[
+                          //                         TextButton(
+                          //                           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage())), 
+                          //                           child: const Text('OK'),
+                          //                           style: TextButton.styleFrom(primary: Theme.of(context).accentColor),
+                          //                         ),
+                          //                       ],
+                          //                     ),
+                            child: IconButton(onPressed: () async {
+                                List<Book> books = await findBooks(book_name.text);
+                                print(books);
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => BooksResultsPage(books: books)));
+                              },
+                                icon: Icon(Icons.check)),
                         ),
                         ElevatedButton(
                           onPressed: () {
@@ -130,7 +140,7 @@ class _ScanResultState extends State<ScanResult> {
                             }
                           },
                           style: ElevatedButton.styleFrom(primary: Theme.of(context).accentColor),
-                          child: IconButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => ScannerPage())); }, icon: Icon(Icons.delete)),
+                          child: IconButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => Scanner())); }, icon: Icon(Icons.clear)),
                         ),
                       ],
                     ),
@@ -143,5 +153,22 @@ class _ScanResultState extends State<ScanResult> {
       ),
     );
   }
+}
 
+Future<List<Book>> findBooks(String book) async {
+  final books = await queryBooks(
+    book,
+    maxResults: 5,
+    printType: PrintType.books,
+    orderBy: OrderBy.relevance,
+    reschemeImageLinks: true,
+  );
+  List<Book> booksList = [];
+  for (var book in books) {
+    //final info = book.info;
+    //print('$info\n');
+    booksList.add(book);
+    print(book);
+  }
+  return booksList;
 }
