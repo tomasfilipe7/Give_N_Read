@@ -4,7 +4,6 @@ import 'package:give_n_read/homepage.dart';
 import 'package:give_n_read/mapspage.dart';
 import 'package:give_n_read/notificationspage.dart';
 import 'package:give_n_read/scanner.dart';
-import 'package:give_n_read/scannerpage.dart';
 
 
 class BottomNavBar extends StatefulWidget {
@@ -24,7 +23,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   List<Widget> navBarPages = [
     HomePage(),
     BooksListPage(),
-    ScannerPage(),
+    Scanner(),
     MapsPage(destination: 'center'),
     NotificationsPage(),
   ];

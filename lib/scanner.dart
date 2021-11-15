@@ -41,92 +41,57 @@ class _ScannerState extends State<Scanner> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          Expanded(flex: 4, child: _buildQRView(context)),
-          Expanded(
-            flex: 1,
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  if (result != null)
-                    Text(
-                        'Result: ${result!.code}')
-                  else
-                    Text('Scan a code'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.all(8),
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              await controller?.toggleFlash();
-                              setState(() {});
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).primaryColor,
-                            ),
-                            child: FutureBuilder(
-                              future: controller?.getFlashStatus(),
-                              builder: (context, snapshot) {
-                                // return Text('Flash: ${snapshot.data}');
-                                return Icon('${snapshot.data}' == 'false' ? Icons.flash_off : Icons.flash_on);
-                              },
-                            )),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(8),
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              await controller?.flipCamera();
-                              setState(() {});
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).primaryColor,
-                            ),
-                            child: FutureBuilder(
-                              future: controller?.getCameraInfo(),
-                              builder: (context, snapshot) {
-                                if (snapshot.data != null) {
-                                  return Icon(Icons.autorenew);
-                                } else {
-                                  return Text('loading');
-                                }
-                              },
-                            )),
-                      )
-                    ],
+          Expanded(child: _buildQRView(context)),
+        ],
+      ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(width: 20),
+          SizedBox(
+            child: ElevatedButton(
+                    onPressed: () async {
+                      await controller?.toggleFlash();
+                      setState(() {});
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Theme.of(context).primaryColor,
+                    ),
+                    child: FutureBuilder(
+                      future: controller?.getFlashStatus(),
+                      builder: (context, snapshot) {
+                        // return Text('Flash: ${snapshot.data}');
+                        return Icon('${snapshot.data}' == 'false' ? Icons.flash_off : Icons.flash_on);
+                      },
+                    ),
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   crossAxisAlignment: CrossAxisAlignment.center,
-                  //   children: <Widget>[
-                  //     Container(
-                  //       margin: EdgeInsets.all(8),
-                  //       child: ElevatedButton(
-                  //         onPressed: () async {
-                  //           await controller?.pauseCamera();
-                  //         },
-                  //         child: Text('pause', style: TextStyle(fontSize: 20)),
-                  //       ),
-                  //     ),
-                  //     Container(
-                  //       margin: EdgeInsets.all(8),
-                  //       child: ElevatedButton(
-                  //         onPressed: () async {
-                  //           await controller?.resumeCamera();
-                  //         },
-                  //         child: Text('resume', style: TextStyle(fontSize: 20)),
-                  //       ),
-                  //     )
-                  //   ],
-                  // ),
-                ],
-              ),
-            ),
-          )
+              width: 80,
+              height: 50,
+          ),
+          SizedBox(width: 20),
+          SizedBox(
+            child: ElevatedButton(
+                    onPressed: () async {
+                      await controller?.flipCamera();
+                      setState(() {});
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Theme.of(context).primaryColor,
+                    ),
+                    child: FutureBuilder(
+                      future: controller?.getCameraInfo(),
+                      builder: (context, snapshot) {
+                        if (snapshot.data != null) {
+                          return Icon(Icons.autorenew);
+                        } else {
+                          return Text('loading');
+                        }
+                      },
+                    ),
+                  ),
+            width: 80,
+            height: 50,
+          ),
         ],
       ),
     );

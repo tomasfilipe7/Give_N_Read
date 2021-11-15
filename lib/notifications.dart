@@ -44,7 +44,7 @@ class _NotificationsListState extends State<NotificationsList> {
                     ),
                     child: Padding(
                       //padding: EdgeInsets.only(left: 100.0, top: 20, right: 40),
-                      padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+                      padding: EdgeInsets.only(top: 20, left: 20, right: 30),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,6 +58,13 @@ class _NotificationsListState extends State<NotificationsList> {
                       ),
                     ),
                   ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 250, top: 8),
+                  child: IconButton(
+                    onPressed: () {}, 
+                    icon: Icon(Icons.clear, color: Colors.grey,), 
+                    ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 120, top: 100),
