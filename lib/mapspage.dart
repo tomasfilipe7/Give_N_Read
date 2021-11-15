@@ -20,8 +20,10 @@ class _MapsPageState extends State<MapsPage> {
   GoogleMapController? _mapcontroller;
   final String key = 'AIzaSyAbx2I4dJwjbu3tLNG3WS6tfLzp-UvmcCU';
   
-  late Position _currentPosition;
 
+  late Position _currentPosition;
+  PolylinePoints polylinePoints = PolylinePoints();
+  Map<PolylineId, Polyline> polylines = {};
 
   @override
   void dispose(){
@@ -34,6 +36,27 @@ class _MapsPageState extends State<MapsPage> {
     zoom: 16,
   );
 
+  static final LatLng _bStop1 = LatLng(40.63318631270549, -8.659459114357666);
+  static final CameraPosition _bStop1Position = CameraPosition(target: _bStop1, zoom: 18.0, tilt: 0, bearing: 0);
+
+  @override
+  void initState(){
+    _getCurrentLocation();
+    _getPolyline();
+    print('oiii');
+    super.initState();
+  }
+
+  
+  _initialCameraPosition(String destination) {
+    if (destination == 'center') {
+      return _aveiroCity;
+    }
+    else {
+      return _bStop1Position;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,9 +66,10 @@ class _MapsPageState extends State<MapsPage> {
             Expanded(
               child: GoogleMap(
                 mapType: MapType.normal,
-                initialCameraPosition: _aveiroCity,
+                initialCameraPosition: _initialCameraPosition(destination),
                 onMapCreated: (controller) => _mapcontroller = controller,
                 markers: _createMarker(),
+                polylines: Set<Polyline>.of(polylines.values),
                 myLocationEnabled: true,
                 myLocationButtonEnabled: false,
                 zoomControlsEnabled: false,
@@ -84,42 +108,83 @@ class _MapsPageState extends State<MapsPage> {
     };
   }
 
-  // _getCurrentLocation() async{
-  //   await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) async {
-  //     setState(() {
-  //       _currentPosition = position;
-
-  //       _mapcontroller?.animateCamera(
-  //         CameraUpdate.newCameraPosition(
-  //           CameraPosition(
-  //             target: LatLng(position.latitude, position.longitude),
-  //             zoom: 18.0,
-  //           )
-  //         )
-  //       );
-  //     });
-  //   });
-  // }
-
-  @override
-  void initState(){
-    super.initState();
-   // _getCurrentLocation();
+  _getCurrentLocation() async{
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) async {
+      setState(() {
+        _currentPosition = position;
+        print('hello $_currentPosition');
+      });
+    });
   }
 
-  // camera position
-  static final LatLng _bStop1 = LatLng(40.63318631270549, -8.659459114357666);
-  static final CameraPosition _bStop1Position = CameraPosition(target: _bStop1, zoom: 11.0, tilt: 0, bearing: 0);
+  // void _getLocation() async {
+  //   _currentPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  //   print(_currentPosition);
+  // }
 
+  _addPolyline(List<LatLng> routeCoords) {
+    PolylineId id = PolylineId('poly');
+    Polyline polyline = Polyline(
+      polylineId: id,
+      points: routeCoords,
+      width: 11,
+    );
 
-  // _initialCameraPosition(String destination) {
-  //   print(destination);
-  //   if destination == 'center' {
-  //     return _aveiroCity;
+    polylines[id] = polyline;
+    setState(() {
+      
+    });
+  }
+
+  void _getPolyline() async {
+    List<LatLng> routeCoords = [];
+
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      key,
+      PointLatLng(6.849660, 3.648190),
+      PointLatLng(6.5212402, 3.3679965),
+      travelMode: TravelMode.walking,
+    );
+
+    if(result.points.isNotEmpty){
+      result.points.forEach((PointLatLng point) {
+        routeCoords.add(LatLng(point.latitude, point.longitude));
+      });
+    } 
+    else {
+      print(result.errorMessage);
+    }
+
+    _addPolyline(routeCoords);
+    print("POLYLINEEEEEEEEEEEE");
+  }
+
+  // _createPolylines(
+  //   double startLat,
+  //   double startLng,
+  //   double destLat,
+  //   double destLng,
+  // ) async {
+  //   polylinePoints = PolylinePoints();
+
+  //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(key, PointLatLng(startLat, startLng), PointLatLng(destLat, destLng), travelMode: TravelMode.walking);
+
+  //   if (result.points.isNotEmpty) {
+  //     result.points.forEach((PointLatLng point) { 
+  //       polylineCoords.add(LatLng(point.latitude, point.longitude));
+  //     });
   //   }
-  //   else {
-  //     return _bStop1Position;
-  //   }
+
+  //   PolylineId id = PolylineId('polylineId');
+
+  //   Polyline polyline = Polyline(
+  //     polylineId: id,
+  //     color: Colors.blue,
+  //     points: polylineCoords,
+  //     width: 3,
+  //   );
+
+  //   polylines[id] = polyline;
   // }
 
   // Future<void> _goToBookStop() async {
