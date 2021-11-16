@@ -29,6 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # Add dependency to `pubspec.yaml` of your project.
+  flutter_bluetooth_serial: ^0.4.0
 
 
   # The following adds the Cupertino Icons font to your application.
