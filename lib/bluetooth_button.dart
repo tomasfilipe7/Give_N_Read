@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
 class BluetoothButton extends StatefulWidget {
-  const BluetoothButton({Key? key}) : super(key: key);
+  BluetoothButton({Key? key}) : super(key: key);
 
   @override
   _BluetoothButtonState createState() => _BluetoothButtonState();
@@ -10,8 +10,7 @@ class BluetoothButton extends StatefulWidget {
 
 class _BluetoothButtonState extends State<BluetoothButton> {
   bool _isScanning = false;
-  final FlutterBlue flutterBlue = FlutterBlue.instance;
-  final List<BluetoothDevice> devicesList = <BluetoothDevice>[];
+  late BluetoothDevice _connectedDevice;
   @override
   Widget build(BuildContext context) {
     return Container(
