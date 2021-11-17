@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:give_n_read/homepage.dart';
+import 'package:give_n_read/models/booksgive.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+  
+  Hive.registerAdapter(BooksGiveAdapter());
+  await Hive.openBox<BooksGive>('booksgive');
+
   runApp(const MyApp());
 }
 

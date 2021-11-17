@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:give_n_read/bottomnavbar.dart';
+import 'package:give_n_read/models/booksgive.dart';
 import 'package:give_n_read/newbookpage.dart';
+import 'package:hive/hive.dart';
 
 class BooksListAllPage extends StatefulWidget {
   String? type;
@@ -13,10 +15,10 @@ class BooksListAllPage extends StatefulWidget {
 
 class _BooksListAllPageState extends State<BooksListAllPage> {
   String? type;
+  List<String> books = [];
   _BooksListAllPageState(this.type, this.books);
 
-  List<String> books = ["Harry Potter", "Lá, onde o vento não chora", "Pessoas Normais", "Hábitos Atómicos"];
-  String image_url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNT0xwyLstvC7wH8jYIKur3GTcSq-g6fj2EbL4wk-qaONHYjBswa3rpFsZJeEjuXcG-lw&usqp=CAU";
+  //String image_url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNT0xwyLstvC7wH8jYIKur3GTcSq-g6fj2EbL4wk-qaONHYjBswa3rpFsZJeEjuXcG-lw&usqp=CAU";
   
   @override
   Widget build(BuildContext context) {
@@ -57,9 +59,19 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
                   child: ListView.builder(
                     //padding: EdgeInsets.all(20.0),
                     physics: BouncingScrollPhysics(),
-                    itemCount: books.length,
+                    itemCount: Hive.box<BooksGive>('booksgive').length,
                     itemBuilder: (BuildContext context, int idx) {
-                        String book = books[idx];
+                      String book_name = Hive.box<BooksGive>('booksgive').getAt(idx)!.name;
+                      String author = Hive.box<BooksGive>('booksgive').getAt(idx)!.author;
+                      String isbn = Hive.box<BooksGive>('booksgive').getAt(idx)!.isbn;
+                      String? image = Hive.box<BooksGive>('booksgive').getAt(idx)?.image;
+                      String user = Hive.box<BooksGive>('booksgive').getAt(idx)!.owner;
+                      print(book_name);
+                      print(image);
+                      print(isbn);
+                      print(author);
+                      print(user);
+                        //String book = books[idx];
                         return GestureDetector(
                           child: Container(
                             height: 140.0,
@@ -89,13 +101,13 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Text(book,
+                                          Text(book_name,
                                             style: TextStyle(
                                               fontSize: 15.0,
                                             ),
                                           ),
                                           SizedBox(height: 7,),
-                                          Text('author'),
+                                          Text(author),
                                         ],
                                       ),
                                     ),
@@ -121,7 +133,7 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
                                         child: Image(
                                           height: 80.0,
                                           width: 70.0,
-                                          image: NetworkImage((image_url).toString()),
+                                          image: NetworkImage((image).toString()),
                                           fit: BoxFit.cover,
                                         ),
                                       ),
