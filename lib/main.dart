@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:give_n_read/homepage.dart';
 import 'package:give_n_read/models/booksgive.dart';
+import 'package:give_n_read/models/booksread.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -11,6 +12,9 @@ Future main() async {
   
   Hive.registerAdapter(BooksGiveAdapter());
   await Hive.openBox<BooksGive>('booksgive');
+
+  Hive.registerAdapter(BooksReadAdapter());
+  await Hive.openBox<BooksRead>('booksread');
 
   runApp(const MyApp());
 }

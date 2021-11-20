@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:give_n_read/bookslistpage.dart';
 import 'package:give_n_read/bookspage.dart';
+import 'package:give_n_read/models/booksgive.dart';
+import 'package:give_n_read/models/booksread.dart';
+import 'package:hive/hive.dart';
 
 class Bookslides extends StatefulWidget {
   String type = "Wanted";
-  List<String> books = [""];
+  List<HiveObject> books = [];
   Bookslides({Key? key, required this.type, required this.books})
       : super(key: key);
 
@@ -15,7 +18,7 @@ class Bookslides extends StatefulWidget {
 class _BookslidesState extends State<Bookslides> {
   String image_url =
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNT0xwyLstvC7wH8jYIKur3GTcSq-g6fj2EbL4wk-qaONHYjBswa3rpFsZJeEjuXcG-lw&usqp=CAU";
-  List<String> books = ["Harry Potter", "Lá, onde o vento não chora"];
+  List<HiveObject> books = [];
   String type = "Wanted";
   _BookslidesState(this.type, this.books);
 
@@ -41,7 +44,7 @@ class _BookslidesState extends State<Bookslides> {
                   
                 ),
                 GestureDetector(
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BooksListAllPage(type: type, books: books,))),
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BooksListAllPage(type: type))),
                   child: Text(
                     'See all',
                     style: TextStyle(
@@ -58,9 +61,11 @@ class _BookslidesState extends State<Bookslides> {
             height: 270.0,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: books.length,
+              itemCount: type == 'To Give' ? (Hive.box<BooksGive>('booksgive').length > 5 ? 5 : Hive.box<BooksGive>('booksgive').length) : (Hive.box<BooksRead>('booksread').length > 5 ? 5 : Hive.box<BooksRead>('booksread').length),
               itemBuilder: (BuildContext context, int idx) {
-                String book = books[idx];
+                HiveObject book = books[idx];
+                String book_name = type == 'To Give' ? Hive.box<BooksGive>('booksgive').getAt(idx)!.name : Hive.box<BooksRead>('booksread').getAt(idx)!.name;
+                String? image = type == 'To Give' ? Hive.box<BooksGive>('booksgive').getAt(idx)!.image : Hive.box<BooksRead>('booksread').getAt(idx)!.image;
                 return GestureDetector(
                   child: Container(
                     //margin: EdgeInsets.all(2.0),
@@ -91,7 +96,7 @@ class _BookslidesState extends State<Bookslides> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    book,
+                                    book_name,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: 15.0,
@@ -131,7 +136,7 @@ class _BookslidesState extends State<Bookslides> {
                                   child: Image(
                                     height: 170.0,
                                     width: 180.0,
-                                    image: NetworkImage(image_url),
+                                    image: NetworkImage(image!),
                                     fit: BoxFit.cover,
                                   ),
                                 ),

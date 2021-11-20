@@ -1,31 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:give_n_read/bottomnavbar.dart';
 import 'package:give_n_read/models/booksgive.dart';
+import 'package:give_n_read/models/booksread.dart';
 import 'package:give_n_read/newbookpage.dart';
 import 'package:hive/hive.dart';
 
 class BooksListAllPage extends StatefulWidget {
   String? type;
-  List<String> books;
-  BooksListAllPage({ Key? key, required this.type, required this.books }) : super(key: key);
+  BooksListAllPage({ Key? key, required this.type }) : super(key: key);
 
   @override
-  _BooksListAllPageState createState() => _BooksListAllPageState(type, books);
+  _BooksListAllPageState createState() => _BooksListAllPageState(type);
 }
 
 class _BooksListAllPageState extends State<BooksListAllPage> {
   String? type;
-  List<String> books = [];
-  _BooksListAllPageState(this.type, this.books);
+  _BooksListAllPageState(this.type);
 
   //String image_url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNT0xwyLstvC7wH8jYIKur3GTcSq-g6fj2EbL4wk-qaONHYjBswa3rpFsZJeEjuXcG-lw&usqp=CAU";
   
+  @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
             onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => NewBookPage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => NewBookPage(type: type,)));
             },
             icon: const Icon(Icons.add, color: Colors.white,),
             label: Text('Add new book', style: TextStyle(color: Colors.white),),
@@ -59,18 +64,12 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
                   child: ListView.builder(
                     //padding: EdgeInsets.all(20.0),
                     physics: BouncingScrollPhysics(),
-                    itemCount: Hive.box<BooksGive>('booksgive').length,
+                    itemCount: (type == 'To Give' ? (Hive.box<BooksGive>('booksgive').length == 0 ? 0 : Hive.box<BooksGive>('booksgive').length) : (Hive.box<BooksRead>('booksread').length == 0 ? 0 : Hive.box<BooksRead>('booksread').length)) ,
                     itemBuilder: (BuildContext context, int idx) {
-                      String book_name = Hive.box<BooksGive>('booksgive').getAt(idx)!.name;
-                      String author = Hive.box<BooksGive>('booksgive').getAt(idx)!.author;
-                      String isbn = Hive.box<BooksGive>('booksgive').getAt(idx)!.isbn;
-                      String? image = Hive.box<BooksGive>('booksgive').getAt(idx)?.image;
-                      String user = Hive.box<BooksGive>('booksgive').getAt(idx)!.owner;
-                      print(book_name);
-                      print(image);
-                      print(isbn);
-                      print(author);
-                      print(user);
+                      HiveObject? book = type == 'To Give' ? Hive.box<BooksGive>('booksgive').getAt(idx) : Hive.box<BooksRead>('booksread').getAt(idx);
+                      String book_name = type == 'To Give' ? Hive.box<BooksGive>('booksgive').getAt(idx)!.name : Hive.box<BooksRead>('booksread').getAt(idx)!.name;
+                      String author = type == 'To Give' ? Hive.box<BooksGive>('booksgive').getAt(idx)!.author : Hive.box<BooksRead>('booksread').getAt(idx)!.author;
+                      String? image = type == 'To Give' ? Hive.box<BooksGive>('booksgive').getAt(idx)?.image : Hive.box<BooksRead>('booksread').getAt(idx)?.image;
                         //String book = books[idx];
                         return GestureDetector(
                           child: Container(
@@ -104,10 +103,12 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
                                           Text(book_name,
                                             style: TextStyle(
                                               fontSize: 15.0,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                           SizedBox(height: 7,),
-                                          Text(author),
+                                          Text(author,
+                                          style: TextStyle(overflow: TextOverflow.ellipsis,),),
                                         ],
                                       ),
                                     ),
@@ -144,7 +145,9 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
                                   margin: EdgeInsets.only(top: 80.0, left: 200),
                                   child: ElevatedButton(
                                     child: Icon(Icons.delete),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      deleteBook(book);
+                                    },
                                     style: ElevatedButton.styleFrom(
                                       primary: Theme.of(context).primaryColor,
                                     )
@@ -165,4 +168,8 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
       bottomNavigationBar: BottomNavBar(idx: 1),
     );
   }
+}
+
+void deleteBook(HiveObject? book){
+  book?.delete();
 }

@@ -5,13 +5,17 @@ import 'package:books_finder/books_finder.dart';
 import 'package:give_n_read/booksresultspage.dart';
 
 class NewBookPage extends StatefulWidget {
-  const NewBookPage({ Key? key }) : super(key: key);
+  String? type;
+  NewBookPage({ Key? key, required this.type }) : super(key: key);
 
   @override
-  _NewBookPageState createState() => _NewBookPageState();
+  _NewBookPageState createState() => _NewBookPageState(type);
 }
 
 class _NewBookPageState extends State<NewBookPage> {
+  String? type;
+  _NewBookPageState(this.type);
+
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
@@ -89,7 +93,7 @@ class _NewBookPageState extends State<NewBookPage> {
                           child: IconButton(
                             onPressed: () async {
                               List<Book> books = await findBooks(book_name.text);
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => BooksResultsPage(books: books)));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => BooksResultsPage(type: type, books: books)));
                             },
                             icon: Icon(Icons.check)),
                         ),

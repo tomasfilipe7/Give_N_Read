@@ -3,23 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:give_n_read/bottomnavbar.dart';
 import 'package:give_n_read/boxes.dart';
 import 'package:give_n_read/models/booksgive.dart';
+import 'package:give_n_read/models/booksread.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class BooksResultsPage extends StatefulWidget {
+  String? type;
   List<Book> books;
-  BooksResultsPage({ Key? key, required this.books }) : super(key: key);
+  BooksResultsPage({ Key? key, required this.type, required this.books }) : super(key: key);
 
   @override
-  _BooksResultsPageState createState() => _BooksResultsPageState(books);
+  _BooksResultsPageState createState() => _BooksResultsPageState(type, books);
 }
 
 class _BooksResultsPageState extends State<BooksResultsPage> {
   //final List<BooksGive> booksGive = [];
+  String? type;
   List<Book> books = [];
-  _BooksResultsPageState(this.books);
-
-  //List<Book> books_to_add = [];
+  _BooksResultsPageState(this.type, this.books);
 
   @override
   void dispose() {
@@ -57,7 +58,7 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
                   child: ListView.builder(
                     //padding: EdgeInsets.all(20.0),
                     physics: BouncingScrollPhysics(),
-                    itemCount: books.length,
+                    itemCount: 5,
                     itemBuilder: (BuildContext context, int idx) {
                         String book = books[idx].info.title;
                         String author = books[idx].info.authors[0];
@@ -142,7 +143,7 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
                                     child: Icon(Icons.check),
                                     onPressed: () {
                                       // books_to_add.add(books[idx]);
-                                      addBooks(books[idx].info.title, books[idx].info.authors[0], books[idx].info.industryIdentifier.toString(), 'user1', books[idx].info.imageLinks["thumbnail"].toString() == null ? image_null.toString() : books[idx].info.imageLinks["thumbnail"].toString());
+                                      addBooks('give', books[idx].info.title, books[idx].info.authors[0], books[idx].info.industryIdentifier.toString(), 'user1', books[idx].info.imageLinks["thumbnail"].toString() == null ? image_null.toString() : books[idx].info.imageLinks["thumbnail"].toString());
                                     },
                                     style: ElevatedButton.styleFrom(
                                       primary: Theme.of(context).primaryColor,
@@ -166,15 +167,31 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
   }
 }
 
-Future addBooks(String name, String author, String isbn, String owner, String? image) async{
-  final booksgive = BooksGive()
-  ..name = name
-  ..author = author
-  ..isbn = isbn 
-  ..owner = owner
-  ..image = image;
+Future addBooks(String type, String name, String author, String isbn, String owner, String? image) async{
+  print(type);
+  if (type == 'give') {
+    final booksgive = BooksGive()
+    ..name = name
+    ..author = author
+    ..isbn = isbn 
+    ..owner = owner
+    ..image = image;
 
-  final box = Boxes.getBooksGive();
-  box.add(booksgive);
-  print(box);
+    final box = Boxes.getBooksGive();
+    box.add(booksgive);
+    print(box);
+  }
+  else {
+    final booksread = BooksRead()
+    ..name = name
+    ..author = author
+    ..isbn = isbn 
+    ..owner = owner
+    ..image = image;
+
+    final box = Boxes.getBooksRead();
+    box.add(booksread);
+    print(box);
+  }
+  
 }
