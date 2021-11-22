@@ -70,8 +70,7 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
                       String book_name = type == 'To Give' ? Hive.box<BooksGive>('booksgive').getAt(idx)!.name : Hive.box<BooksRead>('booksread').getAt(idx)!.name;
                       String author = type == 'To Give' ? Hive.box<BooksGive>('booksgive').getAt(idx)!.author : Hive.box<BooksRead>('booksread').getAt(idx)!.author;
                       String? image = type == 'To Give' ? Hive.box<BooksGive>('booksgive').getAt(idx)?.image : Hive.box<BooksRead>('booksread').getAt(idx)?.image;
-                      String isbn = type == 'To Give' ? Hive.box<BooksGive>('booksgive').getAt(idx)!.isbn : Hive.box<BooksRead>('booksread').getAt(idx)!.isbn;
-                      print(isbn);
+    
                         //String book = books[idx];
                         return GestureDetector(
                           child: Container(
@@ -148,8 +147,8 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
                                   child: ElevatedButton(
                                     child: Icon(Icons.delete),
                                     onPressed: () {
-                                      deleteByISBN('[OTHER:UOM:39015050705204]');
-                                      //deleteBook(book);
+                                      //deleteByISBN('[OTHER:UOM:39015050705204]');
+                                      deleteBook(book);
                                     },
                                     style: ElevatedButton.styleFrom(
                                       primary: Theme.of(context).primaryColor,
@@ -177,10 +176,10 @@ void deleteBook(HiveObject? book){
   book?.delete();
 }
 
-void deleteByISBN(String isbn){
-  print(isbn);
-  var filter = Hive.box<BooksGive>('booksgive').values.where((BooksGive) => BooksGive.isbn == isbn).toList();
-  BooksGive book = filter[0];
-  print(book.isbn);
-  book.delete();
-}
+// void deleteByISBN(String isbn){
+//   print(isbn);
+//   var filter = Hive.box<BooksGive>('booksgive').values.where((BooksGive) => BooksGive.isbn == isbn).toList();
+//   BooksGive book = filter[0];
+//   print(book.isbn);
+//   book.delete();
+// }

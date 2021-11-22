@@ -4,23 +4,26 @@ import 'package:give_n_read/bottomnavbar.dart';
 import 'package:give_n_read/boxes.dart';
 import 'package:give_n_read/models/booksgive.dart';
 import 'package:give_n_read/models/booksread.dart';
+import 'package:give_n_read/models/bookstop.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class BooksResultsPage extends StatefulWidget {
   String? type;
   List<Book> books;
-  BooksResultsPage({ Key? key, required this.type, required this.books }) : super(key: key);
+  bool scan;
+  BooksResultsPage({ Key? key, required this.type, required this.books, required this.scan }) : super(key: key);
 
   @override
-  _BooksResultsPageState createState() => _BooksResultsPageState(type, books);
+  _BooksResultsPageState createState() => _BooksResultsPageState(type, books, scan);
 }
 
 class _BooksResultsPageState extends State<BooksResultsPage> {
   //final List<BooksGive> booksGive = [];
   String? type;
   List<Book> books = [];
-  _BooksResultsPageState(this.type, this.books);
+  bool scan;
+  _BooksResultsPageState(this.type, this.books, this.scan);
 
   @override
   void dispose() {
@@ -143,7 +146,12 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
                                     child: Icon(Icons.check),
                                     onPressed: () {
                                       // books_to_add.add(books[idx]);
-                                      addBooks('give', books[idx].info.title, books[idx].info.authors[0], books[idx].info.industryIdentifier.toString(), 'user1', books[idx].info.imageLinks["thumbnail"].toString() == null ? image_null.toString() : books[idx].info.imageLinks["thumbnail"].toString());
+                                      if (scan == true){
+                                        addOrDeleteBooks(type, books[idx].info.title, books[idx].info.authors[0], books[idx].info.industryIdentifier.toString(), 'user1', books[idx].info.imageLinks["thumbnail"].toString() == null ? image_null.toString() : books[idx].info.imageLinks["thumbnail"].toString(), true);
+                                      }
+                                      else {
+                                        addOrDeleteBooks(type, books[idx].info.title, books[idx].info.authors[0], books[idx].info.industryIdentifier.toString(), 'user1', books[idx].info.imageLinks["thumbnail"].toString() == null ? image_null.toString() : books[idx].info.imageLinks["thumbnail"].toString(), false);
+                                      }
                                     },
                                     style: ElevatedButton.styleFrom(
                                       primary: Theme.of(context).primaryColor,
@@ -167,31 +175,53 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
   }
 }
 
-Future addBooks(String type, String name, String author, String isbn, String owner, String? image) async{
+Future addOrDeleteBooks(String? type, String name, String author, String isbn, String owner, String? image, bool scan) async{
   print(type);
-  if (type == 'give') {
-    final booksgive = BooksGive()
-    ..name = name
-    ..author = author
-    ..isbn = isbn 
-    ..owner = owner
-    ..image = image;
 
-    final box = Boxes.getBooksGive();
-    box.add(booksgive);
-    print(box);
+  if (scan == true){
+    if (type == 'check-in'){
+      final bookstop = BookStop()
+      ..name = name
+      ..author = author
+      ..isbn = isbn;
+
+      final box = Boxes.getBookStop();
+      box.add(bookstop);
+      print(box.length);
+    }
+    else if (type == 'check-out'){
+      var filter = Hive.box<BookStop>('bookstop').values.where((BookStop) => BookStop.name == name && BookStop.author == author).toList();
+      BookStop book = filter[0];
+      print(book.name);
+      print(book.author);
+      book.delete();
+      print(Hive.box<BookStop>('bookstop').length);
+    }
+    
   }
   else {
-    final booksread = BooksRead()
-    ..name = name
-    ..author = author
-    ..isbn = isbn 
-    ..owner = owner
-    ..image = image;
+    if (type == 'To Give') {
+      final booksgive = BooksGive()
+      ..name = name
+      ..author = author
+      ..isbn = isbn 
+      ..owner = owner
+      ..image = image;
 
-    final box = Boxes.getBooksRead();
-    box.add(booksread);
-    print(box);
+      final box = Boxes.getBooksGive();
+      box.add(booksgive);
+    }
+    else {
+      final booksread = BooksRead()
+      ..name = name
+      ..author = author
+      ..isbn = isbn 
+      ..owner = owner
+      ..image = image;
+
+      final box = Boxes.getBooksRead();
+      box.add(booksread);
+    }
   }
   
 }

@@ -129,7 +129,7 @@ class _ScanResultState extends State<ScanResult> {
                             child: IconButton(onPressed: () async {
                                 List<Book> books = await findBooks(book_name.text);
                                 print(books);
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => BooksResultsPage(type: type, books: books)));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => BooksResultsPage(type: type, books: books, scan: true)));
                               },
                                 icon: Icon(Icons.check)),
                         ),

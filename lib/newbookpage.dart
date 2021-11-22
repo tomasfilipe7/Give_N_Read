@@ -93,7 +93,7 @@ class _NewBookPageState extends State<NewBookPage> {
                           child: IconButton(
                             onPressed: () async {
                               List<Book> books = await findBooks(book_name.text);
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => BooksResultsPage(type: type, books: books)));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => BooksResultsPage(type: type, books: books, scan: false)));
                             },
                             icon: Icon(Icons.check)),
                         ),
