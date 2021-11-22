@@ -46,6 +46,7 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
                 padding: EdgeInsets.only(left: 20, top: 40),
                 child: IconButton(onPressed: () {
                 Navigator.pop(context);
+                setState(() { });
               }, icon: Icon(Icons.arrow_back)),
               ),
             ],
@@ -60,7 +61,7 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
               physics: BouncingScrollPhysics(),
               children: [
                 Container(
-                  height: 600.0,
+                  height: 1000.0,
                   child: ListView.builder(
                     //padding: EdgeInsets.all(20.0),
                     physics: BouncingScrollPhysics(),
@@ -70,8 +71,6 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
                       String book_name = type == 'To Give' ? Hive.box<BooksGive>('booksgive').getAt(idx)!.name : Hive.box<BooksRead>('booksread').getAt(idx)!.name;
                       String author = type == 'To Give' ? Hive.box<BooksGive>('booksgive').getAt(idx)!.author : Hive.box<BooksRead>('booksread').getAt(idx)!.author;
                       String? image = type == 'To Give' ? Hive.box<BooksGive>('booksgive').getAt(idx)?.image : Hive.box<BooksRead>('booksread').getAt(idx)?.image;
-    
-                        //String book = books[idx];
                         return GestureDetector(
                           child: Container(
                             height: 140.0,
@@ -104,12 +103,14 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
                                           Text(book_name,
                                             style: TextStyle(
                                               fontSize: 15.0,
+                                              fontWeight: FontWeight.bold,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                           SizedBox(height: 7,),
-                                          Text(author,
-                                          style: TextStyle(overflow: TextOverflow.ellipsis,),),
+                                          Padding(padding: EdgeInsets.only(right: 20),
+                                          child: Text(author,
+                                          style: TextStyle(fontSize: 12.0, overflow: TextOverflow.ellipsis,),),),
                                         ],
                                       ),
                                     ),
@@ -143,12 +144,36 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(top: 80.0, left: 200),
+                                  margin: EdgeInsets.only(top: 75.0, left: 210),
                                   child: ElevatedButton(
                                     child: Icon(Icons.delete),
                                     onPressed: () {
                                       //deleteByISBN('[OTHER:UOM:39015050705204]');
-                                      deleteBook(book);
+                                      showDialog<String>(
+                                        context: context, 
+                                        builder: (BuildContext context) => AlertDialog(
+                                          //title: Text('Delete book'),
+                                          content: const Text('Do you want to remove this book?', textAlign: TextAlign.center),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                deleteBook(book);
+                                                Navigator.pop(context, 'Yes');
+                                                setState(() { });
+                                              }, 
+                                              child: const Text('Yes'),
+                                              style: TextButton.styleFrom(primary: Theme.of(context).accentColor),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context, 'No');
+                                              }, 
+                                              child: const Text('No'),
+                                              style: TextButton.styleFrom(primary: Theme.of(context).accentColor),
+                                            ),
+                                          ],
+                                        ),
+                                      );
                                     },
                                     style: ElevatedButton.styleFrom(
                                       primary: Theme.of(context).primaryColor,

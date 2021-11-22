@@ -3,6 +3,7 @@ import 'package:give_n_read/bookslistpage.dart';
 import 'package:give_n_read/bookspage.dart';
 import 'package:give_n_read/models/booksgive.dart';
 import 'package:give_n_read/models/booksread.dart';
+import 'package:give_n_read/newbookpage.dart';
 import 'package:hive/hive.dart';
 
 class Bookslides extends StatefulWidget {
@@ -57,6 +58,25 @@ class _BookslidesState extends State<Bookslides> {
               ],
             ),
           ),
+          books.length == 0 ? 
+          Container(
+            child: Column(
+              children: [
+                SizedBox(height: 20,),
+                Text('You have no books here. \nPlease add some', textAlign: TextAlign.center,),
+                SizedBox(height: 20,),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => NewBookPage(type: type,)));
+                  },
+                  child: Icon(Icons.add),
+                  style: ElevatedButton.styleFrom(
+                    primary: Theme.of(context).accentColor,
+                  )
+                ),
+              ],
+            ),
+          ) :
           Container(
             height: 270.0,
             child: ListView.builder(

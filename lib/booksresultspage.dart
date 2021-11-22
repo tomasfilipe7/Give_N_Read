@@ -104,10 +104,9 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
                                             ),
                                           ),
                                           SizedBox(height: 7,),
-                                          Text(author,
-                                            style: TextStyle(
-                                              overflow: TextOverflow.ellipsis,
-                                            ),),
+                                          Padding(padding: EdgeInsets.only(right: 40),
+                                          child: Text(author,
+                                          style: TextStyle(fontSize: 12.0, overflow: TextOverflow.ellipsis,),),),
                                         ],
                                       ),
                                     ),
@@ -145,13 +144,36 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
                                   child: ElevatedButton(
                                     child: Icon(Icons.check),
                                     onPressed: () {
-                                      // books_to_add.add(books[idx]);
-                                      if (scan == true){
-                                        addOrDeleteBooks(type, books[idx].info.title, books[idx].info.authors[0], books[idx].info.industryIdentifier.toString(), 'user1', books[idx].info.imageLinks["thumbnail"].toString() == null ? image_null.toString() : books[idx].info.imageLinks["thumbnail"].toString(), true);
-                                      }
-                                      else {
-                                        addOrDeleteBooks(type, books[idx].info.title, books[idx].info.authors[0], books[idx].info.industryIdentifier.toString(), 'user1', books[idx].info.imageLinks["thumbnail"].toString() == null ? image_null.toString() : books[idx].info.imageLinks["thumbnail"].toString(), false);
-                                      }
+                                      showDialog<String>(
+                                        context: context, 
+                                        builder: (BuildContext context) => AlertDialog(
+                                          //title: Text('Delete book'),
+                                          content: const Text('Do you want to add this book?', textAlign: TextAlign.center),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                if (scan == true){
+                                                  addOrDeleteBooks(type, books[idx].info.title, books[idx].info.authors[0], books[idx].info.industryIdentifier.toString(), 'user1', books[idx].info.imageLinks["thumbnail"].toString() == null ? image_null.toString() : books[idx].info.imageLinks["thumbnail"].toString(), true);
+                                                }
+                                                else {
+                                                  addOrDeleteBooks(type, books[idx].info.title, books[idx].info.authors[0], books[idx].info.industryIdentifier.toString(), 'user1', books[idx].info.imageLinks["thumbnail"].toString() == null ? image_null.toString() : books[idx].info.imageLinks["thumbnail"].toString(), false);
+                                                }
+                                                Navigator.pop(context, 'Yes');
+                                                setState(() { });
+                                              }, 
+                                              child: const Text('Yes'),
+                                              style: TextButton.styleFrom(primary: Theme.of(context).accentColor),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context, 'No');
+                                              }, 
+                                              child: const Text('No'),
+                                              style: TextButton.styleFrom(primary: Theme.of(context).accentColor),
+                                            ),
+                                          ],
+                                        ),
+                                      );
                                     },
                                     style: ElevatedButton.styleFrom(
                                       primary: Theme.of(context).primaryColor,

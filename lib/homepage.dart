@@ -22,7 +22,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _writeController = TextEditingController();
-  String message = "GiveU";
+  String message = "Give";
   // BluetoothDevice _connectedDevice;
   // late List<BluetoothService> _services;
   late String _connectedDevice;
