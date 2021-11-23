@@ -34,7 +34,7 @@ class _BooksListAllPageState extends State<BooksListAllPage> {
             },
             icon: const Icon(Icons.add, color: Colors.white,),
             label: Text('Add new book', style: TextStyle(color: Colors.white),),
-      ),
+      ), 
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,

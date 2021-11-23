@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "966262236680",
+    "firebase_url": "https://give-n-read-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "give-n-read",
+    "storage_bucket": "give-n-read.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966262236680:android:49b5ee8f41d700b9b113bd",
+        "android_client_info": {
+          "package_name": "com.example.give_n_read"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "966262236680-m4q924llq0rnkhi4h9m1idm2cgvt18a5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0ixw_C-JL__FJSUAY__SP71ytdrtiONw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "966262236680-m4q924llq0rnkhi4h9m1idm2cgvt18a5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

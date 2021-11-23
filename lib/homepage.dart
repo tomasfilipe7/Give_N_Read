@@ -6,7 +6,6 @@ import 'package:give_n_read/models/booksgive.dart';
 import 'package:give_n_read/models/booksread.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:nearby_connections/nearby_connections.dart';
 import 'package:hive/hive.dart';
 

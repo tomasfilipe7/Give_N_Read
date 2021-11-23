@@ -1,4 +1,5 @@
 import 'package:books_finder/books_finder.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:give_n_read/bottomnavbar.dart';
 import 'package:give_n_read/boxes.dart';
@@ -12,10 +13,11 @@ class BooksResultsPage extends StatefulWidget {
   String? type;
   List<Book> books;
   bool scan;
-  BooksResultsPage({ Key? key, required this.type, required this.books, required this.scan }) : super(key: key);
+  String? bookstop;
+  BooksResultsPage({ Key? key, required this.type, required this.books, required this.scan, required this.bookstop }) : super(key: key);
 
   @override
-  _BooksResultsPageState createState() => _BooksResultsPageState(type, books, scan);
+  _BooksResultsPageState createState() => _BooksResultsPageState(type, books, scan, bookstop);
 }
 
 class _BooksResultsPageState extends State<BooksResultsPage> {
@@ -23,7 +25,8 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
   String? type;
   List<Book> books = [];
   bool scan;
-  _BooksResultsPageState(this.type, this.books, this.scan);
+  String? bookstop;
+  _BooksResultsPageState(this.type, this.books, this.scan, this.bookstop);
 
   @override
   void dispose() {
@@ -153,10 +156,10 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
                                             TextButton(
                                               onPressed: () {
                                                 if (scan == true){
-                                                  addOrDeleteBooks(type, books[idx].info.title, books[idx].info.authors[0], books[idx].info.industryIdentifier.toString(), 'user1', books[idx].info.imageLinks["thumbnail"].toString() == null ? image_null.toString() : books[idx].info.imageLinks["thumbnail"].toString(), true);
+                                                  addOrDeleteBooks(type, books[idx].info.title, books[idx].info.authors[0], books[idx].info.industryIdentifier.toString(), 'user1', books[idx].info.imageLinks["thumbnail"].toString() == null ? image_null.toString() : books[idx].info.imageLinks["thumbnail"].toString(), true, bookstop);
                                                 }
                                                 else {
-                                                  addOrDeleteBooks(type, books[idx].info.title, books[idx].info.authors[0], books[idx].info.industryIdentifier.toString(), 'user1', books[idx].info.imageLinks["thumbnail"].toString() == null ? image_null.toString() : books[idx].info.imageLinks["thumbnail"].toString(), false);
+                                                  addOrDeleteBooks(type, books[idx].info.title, books[idx].info.authors[0], books[idx].info.industryIdentifier.toString(), 'user1', books[idx].info.imageLinks["thumbnail"].toString() == null ? image_null.toString() : books[idx].info.imageLinks["thumbnail"].toString(), false, null);
                                                 }
                                                 Navigator.pop(context, 'Yes');
                                                 setState(() { });
@@ -197,27 +200,38 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
   }
 }
 
-Future addOrDeleteBooks(String? type, String name, String author, String isbn, String owner, String? image, bool scan) async{
+Future addOrDeleteBooks(String? type, String name, String author, String isbn, String owner, String? image, bool scan, String? bookstop) async{
   print(type);
+  final DatabaseReference _bookstopRef =
+      FirebaseDatabase.instance.reference().child('bookstop');
 
   if (scan == true){
     if (type == 'check-in'){
-      final bookstop = BookStop()
-      ..name = name
-      ..author = author
-      ..isbn = isbn;
+      // final bookstop = BookStop()
+      // ..name = name
+      // ..author = author
+      // ..isbn = isbn;
 
-      final box = Boxes.getBookStop();
-      box.add(bookstop);
-      print(box.length);
+      // final box = Boxes.getBookStop();
+      // box.add(bookstop);
+      // print(box.length);
+
+      _bookstopRef.push().set({'id': bookstop, 'books_title': name, 'books_author': author});
+
+      _bookstopRef.once().then((DataSnapshot snapshot) {
+        print('Data : ${snapshot.key}');
+      });
+
     }
     else if (type == 'check-out'){
-      var filter = Hive.box<BookStop>('bookstop').values.where((BookStop) => BookStop.name == name && BookStop.author == author).toList();
-      BookStop book = filter[0];
-      print(book.name);
-      print(book.author);
-      book.delete();
-      print(Hive.box<BookStop>('bookstop').length);
+      // var filter = Hive.box<BookStop>('bookstop').values.where((BookStop) => BookStop.name == name && BookStop.author == author).toList();
+      // BookStop book = filter[0];
+      // print(book.name);
+      // print(book.author);
+      // book.delete();
+      // print(Hive.box<BookStop>('bookstop').length);
+
+      _bookstopRef.orderByChild('id').equalTo('Bookstop1');
     }
     
   }
