@@ -149,16 +149,20 @@ class _HomePageState extends State<HomePage> {
                                   //mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Icon(
-                                      Icons.book_rounded,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                    ),
-                                    Text(
-                                      " " + books_title[idx].toString(),
-                                      style: const TextStyle(fontSize: 18),
-                                      overflow: TextOverflow.ellipsis,
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.book_rounded,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                        ),
+                                        Text(
+                                          books_title[idx].toString(),
+                                          style: const TextStyle(fontSize: 18),
+                                          overflow: TextOverflow.ellipsis,
+                                        )
+                                      ],
                                     ),
                                     Expanded(
                                       child: Text(
@@ -264,7 +268,9 @@ class _HomePageState extends State<HomePage> {
                             Text(
                               "Ask for books",
                               style: TextStyle(
-                                  fontSize: 12, color: Colors.grey[600]),
+                                  fontSize: 12,
+                                  color: Colors.grey[600],
+                                  fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
                               height: 10,
@@ -272,8 +278,7 @@ class _HomePageState extends State<HomePage> {
                             ElevatedButton(
                               onPressed: () {
                                 endpointMap.forEach((key, value) {
-                                  showSnackbar(
-                                      "Sending signal to ${value.endpointName}, id: $key");
+                                  showSnackbar("Requesting books.");
                                   send_signal(key);
                                 });
                               },
@@ -367,7 +372,7 @@ class _HomePageState extends State<HomePage> {
                 "Lost discovered Endpoint: ${endpointMap[id]!.endpointName}, id $id");
           },
         );
-        showSnackbar("DISCOVERING: " + a.toString());
+        showSnackbar("DISCOVERING");
       } catch (e) {
         showSnackbar(e);
       }
@@ -400,7 +405,7 @@ class _HomePageState extends State<HomePage> {
             });
           },
         );
-        showSnackbar("ADVERTISING: " + a.toString());
+        showSnackbar("ADVERTISING");
       } catch (exception) {
         showSnackbar(exception);
       }
@@ -475,8 +480,6 @@ class _HomePageState extends State<HomePage> {
                               String? author = _book.author;
                               String result = "B " + book_name!;
 
-                              print(result);
-                              showSnackbar(endid + ": " + message);
                               setState(() {
                                 books_title.add(_book.title);
                                 books[_book.title] = _book.author;
@@ -521,9 +524,6 @@ class _HomePageState extends State<HomePage> {
                         showSnackbar(endid + ": FAILED to transfer file");
                       } else if (payloadTransferUpdate.status ==
                           PayloadStatus.SUCCESS) {
-                        showSnackbar(
-                            "$endid success, total bytes = ${payloadTransferUpdate.totalBytes}");
-
                         if (map.containsKey(payloadTransferUpdate.id)) {
                           //rename the file now
                           String name = map[payloadTransferUpdate.id]!;
@@ -536,7 +536,7 @@ class _HomePageState extends State<HomePage> {
                     },
                   );
                   String accepted =
-                      "The device $id from ${info.endpointName} has accepted the connection";
+                      "The device ${info.endpointName} has accepted the connection";
                   Nearby().sendBytesPayload(
                       id, Uint8List.fromList(accepted.codeUnits));
                 },
@@ -571,13 +571,11 @@ class _HomePageState extends State<HomePage> {
 
   void sendMyReadList(id, deviceName) {
     // ENCODING
-    print("LETS GO JSON");
     for (BooksRead book in Hive.box<BooksRead>('booksread').values) {
       _Book _book = _Book(book.name, book.author);
       String _json = jsonEncode(_book);
-      showSnackbar("Sending $_json to ${deviceName}, id: $id");
+      showSnackbar("Sending reading list.");
       Nearby().sendBytesPayload(id, Uint8List.fromList(_json.codeUnits));
-      print("SENT JSON");
     }
   }
 
@@ -590,10 +588,10 @@ class _HomePageState extends State<HomePage> {
           SnackBar(content: Text("Location permissions not granted :(")));
     }
     Nearby().askExternalStoragePermission();
-  }
-
-  String getbook(String book) {
-    return "OI";
+    await Nearby().stopAllEndpoints();
+    setState(() {
+      endpointMap.clear();
+    });
   }
 }
 
