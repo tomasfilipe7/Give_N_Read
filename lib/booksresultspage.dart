@@ -37,7 +37,7 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
 
   @override
   void dispose() {
-    Hive.close();
+    // Hive.close();
 
     super.dispose();
   }
@@ -52,19 +52,19 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SizedBox(height: 30),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.arrow_back)),
-              ),
-            ],
-          ),
+          // Column(
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //     Padding(
+          //       padding: EdgeInsets.only(left: 20),
+          //       child: IconButton(
+          //           onPressed: () {
+          //             Navigator.pop(context);
+          //           },
+          //           icon: Icon(Icons.arrow_back)),
+          //     ),
+          //   ],
+          // ),
           Expanded(
             child: ListView(
               physics: BouncingScrollPhysics(),
@@ -78,7 +78,9 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
                     itemBuilder: (BuildContext context, int idx) {
                       print(books[idx].info.toString());
                       String book = books[idx].info.title;
-                      String author = books[idx].info.authors.length == 0 ?  'none' : books[idx].info.authors[0];
+                      String author = books[idx].info.authors.length == 0
+                          ? 'none'
+                          : books[idx].info.authors[0];
                       Uri? image_url =
                           books[idx].info.imageLinks["thumbnail"] == null
                               ? image_null
@@ -180,11 +182,13 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
                                         builder: (BuildContext context) =>
                                             AlertDialog(
                                           //title: Text('Delete book'),
-                                          content: type == 'check-in' ? const Text(
-                                              'Do you want to add this book?',
-                                              textAlign: TextAlign.center) : const Text(
-                                              'Do you want to remove this book?',
-                                              textAlign: TextAlign.center),
+                                          content: type == 'check-out'
+                                              ? const Text(
+                                                  'Do you want to remove this book?',
+                                                  textAlign: TextAlign.center)
+                                              : const Text(
+                                                  'Do you want to add this book?',
+                                                  textAlign: TextAlign.center),
                                           actions: <Widget>[
                                             TextButton(
                                               onPressed: () {

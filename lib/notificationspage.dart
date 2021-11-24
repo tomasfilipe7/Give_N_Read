@@ -84,6 +84,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
               ),
             ),
             Container(
+              height: 400,
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
@@ -169,6 +170,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
             Container(
               child: ElevatedButton(
                 child: Text("Refresh bookstops"),
+                style: ElevatedButton.styleFrom(
+                    primary: Theme.of(context).accentColor),
                 onPressed: () {
                   updateBookStops();
                 },
