@@ -158,21 +158,19 @@ class _HomePageState extends State<HomePage> {
                                               .secondary,
                                         ),
                                         Text(
-                                          books_title[idx].toString(),
+                                          ' ' + books_title[idx].toString() + ', ',
                                           style: const TextStyle(fontSize: 18),
                                           overflow: TextOverflow.ellipsis,
-                                        )
-                                      ],
-                                    ),
-                                    Expanded(
-                                      child: Text(
+                                        ),
+                                        Text(
                                         books[books_title[idx].toString()]
                                             .toString(),
                                         style: TextStyle(
                                             color: Colors.grey[500],
-                                            fontSize: 18),
+                                            fontSize: 16),
                                         overflow: TextOverflow.ellipsis,
                                       ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -193,7 +191,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       "Advertise",
-                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      style: TextStyle(fontSize: 14, color: Colors.grey[600], fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       height: 10,
@@ -232,7 +230,7 @@ class _HomePageState extends State<HomePage> {
                             Text(
                               "Discovery",
                               style: TextStyle(
-                                  fontSize: 12, color: Colors.grey[600]),
+                                  fontSize: 14, color: Colors.grey[600], fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
                               height: 10,
@@ -268,7 +266,7 @@ class _HomePageState extends State<HomePage> {
                             Text(
                               "Ask for books",
                               style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 14,
                                   color: Colors.grey[600],
                                   fontWeight: FontWeight.bold),
                             ),
@@ -301,19 +299,24 @@ class _HomePageState extends State<HomePage> {
                       )
                     ],
                   ),
-                  ElevatedButton(
-                    child: Text("Stop All Endpoints"),
-                    onPressed: () async {
-                      await Nearby().stopAllEndpoints();
-                      setState(() {
-                        endpointMap.clear();
-                      });
-                    },
-                  )
                 ],
               )
             ],
-          )
+          ),
+          SizedBox(height: 10,),
+          SizedBox(
+            height: 40,
+            child: ElevatedButton(
+              child: Text("Stop All Endpoints"),
+              onPressed: () async {
+                await Nearby().stopAllEndpoints();
+                setState(() {
+                  endpointMap.clear();
+                });
+              },
+              style: ElevatedButton.styleFrom(primary: Theme.of(context).accentColor),
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavBar(idx: 0),
