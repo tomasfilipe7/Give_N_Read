@@ -93,7 +93,7 @@ class _NewBookPageState extends State<NewBookPage> {
                           child: IconButton(
                             onPressed: () async {
                               List<Book> books = await findBooks(book_name.text);
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => BooksResultsPage(type: type, books: books, scan: false, bookstop: null,)));
+                              await Navigator.push(context, MaterialPageRoute(builder: (context) => BooksResultsPage(type: type, books: books, scan: false, bookstop: null,)));
                             },
                             icon: Icon(Icons.check)),
                         ),
@@ -122,16 +122,18 @@ class _NewBookPageState extends State<NewBookPage> {
 Future<List<Book>> findBooks(String book) async {
   final books = await queryBooks(
     book,
-    maxResults: 5,
+    maxResults: 8,
     printType: PrintType.books,
     orderBy: OrderBy.relevance,
     reschemeImageLinks: true,
   );
+
   List<Book> booksList = [];
   for (var book in books) {
     //final info = book.info;
     //print('$info\n');
     booksList.add(book);
   }
+
   return booksList;
 }

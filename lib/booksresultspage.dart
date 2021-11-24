@@ -74,10 +74,11 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
                   child: ListView.builder(
                     //padding: EdgeInsets.all(20.0),
                     physics: BouncingScrollPhysics(),
-                    itemCount: 5,
+                    itemCount: books.length,
                     itemBuilder: (BuildContext context, int idx) {
+                      print(books[idx].info.toString());
                       String book = books[idx].info.title;
-                      String author = books[idx].info.authors[0];
+                      String author = books[idx].info.authors.length == 0 ?  'none' : books[idx].info.authors[0];
                       Uri? image_url =
                           books[idx].info.imageLinks["thumbnail"] == null
                               ? image_null
@@ -179,8 +180,10 @@ class _BooksResultsPageState extends State<BooksResultsPage> {
                                         builder: (BuildContext context) =>
                                             AlertDialog(
                                           //title: Text('Delete book'),
-                                          content: const Text(
+                                          content: type == 'check-in' ? const Text(
                                               'Do you want to add this book?',
+                                              textAlign: TextAlign.center) : const Text(
+                                              'Do you want to remove this book?',
                                               textAlign: TextAlign.center),
                                           actions: <Widget>[
                                             TextButton(
